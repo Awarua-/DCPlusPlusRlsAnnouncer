@@ -19,17 +19,6 @@ nmdc = require("../../lib/nmdc/nmdc");
 filePath = process.argv[2];
 airDate = process.argv[7];
 
-hub = new nmdc.Nmdc({
-  nick: 'Awarua-auto_releasebot',   //nick
-  auto_reconnect: false,            // Attempt reconnect if disconnected (60 seconds)
-  address: '192.168.2.101',      //connection address
-  //password: 'Helloworld2014',       //Password, if required for nick
-  encoding: 'utf8',                 //Hub text encoding
-  desc: 'Releasebot',               //Description
-  tag: "nmdc.js",                   //tag
-  share: 0                         //share size
-});
-
 function shouldAnnounce() {
     var now = new Date().getTime(),
         airDateInMs = Date.parse(airDate),
@@ -105,6 +94,17 @@ function release() {
     console.log(tth);
     console.log(magnetic_link);
     console.log(reltype);
+
+    hub = new nmdc.Nmdc({
+        nick: 'Awarua-auto_releasebot',   //nick
+        auto_reconnect: false,            // Attempt reconnect if disconnected (60 seconds)
+        address: '192.168.2.101',      //connection address
+        //password: 'Helloworld2014',       //Password, if required for nick
+        encoding: 'utf8',                 //Hub text encoding
+        desc: 'Releasebot',               //Description
+        tag: "nmdc.js",                   //tag
+        share: 0                         //share size
+    });
 
     hub.onConnect = function() {
         relSearch();
