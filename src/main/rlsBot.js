@@ -82,6 +82,7 @@ function getTTH(callback) {
 
 function getReleaseType() {
     var releasetype = filePath.split("\\")[2]; //get the type of release, from folder structure, ie TV, E:\Media\Tv\tvseries\season\episode
+    console.log(releasetype);
     if (releasetype == 'Tv') {           //format release type for release
         reltype = 'tvseries';
     }
