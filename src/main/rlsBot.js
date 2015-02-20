@@ -97,14 +97,20 @@ function getReleaseType() {
 }
 
 function release() {
+    console.log("release");
     createMagneticLink();
     getReleaseType();
+
+    console.log(tth);
+    console.log(magnetic_link);
+    console.log(reltype);
 
     hub.onConnect = function() {
         relSearch();
     };
     setTimeout(function() {
-        console.log('hub parts'); hub.disconnect();
+        console.log('hub parts');
+        hub.disconnect();
     }, 10000);
 }
 
@@ -119,6 +125,7 @@ function createMagneticLink() {
 }
 
 function relSearch() {
+    console.log("relSearch");
     if (tth !== null) {
         hub.pm("New_Releases", "!searchrel " + tth, null);
         console.log("pmd New_Releases with TTH: " + tth);
