@@ -67,6 +67,11 @@ function getTTH(callback) {
         console.log(lines);
     });
 
+    prc.stderr.setEncoding('utf8');
+    prc.stderr.on('data', function (data) {
+        console.log(data.toString());
+    });
+
     prc.on('close', function (code) {
         console.log('process exit code ' + code);
         callback();
@@ -80,7 +85,7 @@ function getTTH(callback) {
 function getReleaseType() {
     // magic number problem here, don't know about users directory structure.
     var releasetype = filePath.split(path.sep)[4]; //get the type of release, from folder structure, ie TV, E:\Media\Tv\tvseries\season\episode
-    console.log(releasetype);
+
     if (releasetype === 'Tv') {           //format release type for release
         reltype = 'TV';
     }
@@ -129,7 +134,6 @@ function createMagneticLink() {
         magnetic_link = "magnet:?xt=urn:tree:tiger:" + tth + "&xl=" + parseInt(fileSizeInBytes) + "&dn=" + fileName;
     }
     else {
-        console.log("release as unlinked");
         magnetic_link = fileName;
     }
 }
@@ -161,7 +165,7 @@ function relSearch(callback) {
     }
     else {
         console.log("Release as unlinked");
-        hub.say('!addrel ' + reltype + ' ' + magnetic_link + ' Search for file, note please wait for up to 5min', null);
+        hub.say('!addRelease ' + reltype + ' ' + magnetic_link + ' Search for file, note please wait for up to 5min', null);
     }
     callback();
 
