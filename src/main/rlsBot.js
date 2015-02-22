@@ -31,7 +31,10 @@ function shouldAnnounce() {
         getTTH(release);
     }
     else {
-	console.log("Don't release");
+	    console.log("Air date of release is old don't release.");
+        console.log(airDate);
+        console.log(now);
+        console.log(airDateInMs + daysInMs);
     }
 }
 
