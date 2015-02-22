@@ -30,6 +30,9 @@ function shouldAnnounce() {
         getFileSize();
         getTTH(release);
     }
+    else {
+	console.log("Don't release");
+    }
 }
 
 function getFileName() {
@@ -71,7 +74,7 @@ function getTTH(callback) {
 
 function getReleaseType() {
     // magic number problem here, don't know about users directory structure.
-    var releasetype = filePath.split(path.sep)[3]; //get the type of release, from folder structure, ie TV, E:\Media\Tv\tvseries\season\episode
+    var releasetype = filePath.split(path.sep)[4]; //get the type of release, from folder structure, ie TV, E:\Media\Tv\tvseries\season\episode
     console.log(releasetype);
     if (releasetype === 'Tv') {           //format release type for release
         reltype = 'tvseries';
@@ -99,7 +102,7 @@ function release() {
     hub = new nmdc.Nmdc({
         nick: 'Awarua-auto_releasebot',   //nick
         auto_reconnect: false,            // Attempt reconnect if disconnected (60 seconds)
-        address: '192.168.2.101',      //connection address
+        address: 'ohsnap.ddns.info:4100',      //connection address
         //password: 'Helloworld2014',       //Password, if required for nick
         encoding: 'utf8',                 //Hub text encoding
         desc: 'Releasebot',               //Description
@@ -108,12 +111,14 @@ function release() {
     });
 
     hub.onConnect = function() {
-        relSearch();
+        relSearch(function() {
+	    setTimeout(function() {
+                console.log('hub parts');
+                hub.disconnect();
+            }, 10000);
+        });
     };
-    setTimeout(function() {
-        console.log('hub parts');
-        hub.disconnect();
-    }, 10000);
+
 }
 
 function createMagneticLink() {
@@ -126,7 +131,7 @@ function createMagneticLink() {
     }
 }
 
-function relSearch() {
+function relSearch(callback) {
     console.log("relSearch");
     if (tth !== null) {
         hub.pm("New_Releases", "!searchrel " + tth, null);
@@ -154,6 +159,7 @@ function relSearch() {
         console.log("Release as unlinked");
         hub.say('!addrel ' + reltype + ' ' + magnetic_link + ' Search for file, note please wait for up to 5min', null);
     }
+    callback();
 
 }
 
