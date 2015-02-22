@@ -63,7 +63,6 @@ function getTTH(callback) {
         if (line) {
             tth = line[0].replace(/^THH:\s/, "");
         }
-        console.log(str);
         console.log(lines);
     });
 
