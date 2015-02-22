@@ -17,7 +17,7 @@ fs = require("fs");
 path = require("path");
 nmdc = require("../../lib/nmdc/nmdc");
 filePath = process.argv[2];
-airDate = process.argv[7];
+airDate = process.argv[3];
 
 function shouldAnnounce() {
     var now = new Date().getTime(),
