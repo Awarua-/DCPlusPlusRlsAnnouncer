@@ -70,15 +70,16 @@ function getTTH(callback) {
 }
 
 function getReleaseType() {
-    var releasetype = filePath.split("\\")[2]; //get the type of release, from folder structure, ie TV, E:\Media\Tv\tvseries\season\episode
+    // magic number problem here, don't know about users directory structure.
+    var releasetype = filePath.split(path.sep)[3]; //get the type of release, from folder structure, ie TV, E:\Media\Tv\tvseries\season\episode
     console.log(releasetype);
-    if (releasetype == 'Tv') {           //format release type for release
+    if (releasetype === 'Tv') {           //format release type for release
         reltype = 'tvseries';
     }
-    else if (releasetype == 'Anime') {
+    else if (releasetype === 'Anime') {
         reltype = 'anime';
     }
-    else if (releasetype == "HD Movies") {
+    else if (releasetype === "HD Movies") {
         reltype = 'movie';
     }
     else {
