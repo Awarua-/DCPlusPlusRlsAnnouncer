@@ -112,10 +112,8 @@ function release() {
 
     hub.onConnect = function() {
         relSearch(function() {
-	    setTimeout(function() {
-                console.log('hub parts');
-                hub.disconnect();
-            }, 10000);
+            console.log('hub parts');
+            hub.disconnect();
         });
     };
 
@@ -133,15 +131,16 @@ function createMagneticLink() {
 
 function relSearch(callback) {
     console.log("relSearch");
+    console.log(tth);
     if (tth !== null) {
-        hub.pm("New_Releases", "!searchrel " + tth, null);
-        console.log("pmd New_Releases with TTH: " + tth);
+        hub.say("!searchReleases " + tth, null);
+        console.log("Ask New_Releases with TTH: " + tth);
 
         hub.onPrivate = function(u, m) {
             if (u === "New_Releases") {
                 console.log("New_Releases said: " + m);
 
-                if (m.indexOf("was not found in releases") >= 0) {
+                if (m.indexOf("No releases found that contain") >= 0) {
                     var message = "!addrel " + reltype + " " + magnetic_link + " Note please wait for up to 5min";
                     console.log(message);
                     hub.say(message, null);
