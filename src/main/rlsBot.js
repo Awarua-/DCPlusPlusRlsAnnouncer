@@ -141,7 +141,7 @@ function relSearch(callback) {
                 console.log("New_Releases said: " + m);
 
                 if (m.indexOf("No releases found that contain") >= 0) {
-                    var message = "!addrel " + reltype + " " + magnetic_link + " Note please wait for up to 5min";
+                    var message = "!addRelease " + reltype + " " + magnetic_link + " Note please wait for up to 5min";
                     console.log(message);
                     hub.say(message, null);
                     // release new episode
