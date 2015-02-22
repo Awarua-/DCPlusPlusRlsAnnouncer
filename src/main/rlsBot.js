@@ -77,16 +77,16 @@ function getReleaseType() {
     var releasetype = filePath.split(path.sep)[4]; //get the type of release, from folder structure, ie TV, E:\Media\Tv\tvseries\season\episode
     console.log(releasetype);
     if (releasetype === 'Tv') {           //format release type for release
-        reltype = 'tvseries';
+        reltype = 'TV';
     }
     else if (releasetype === 'Anime') {
-        reltype = 'anime';
+        reltype = 'Anime';
     }
     else if (releasetype === "HD Movies") {
-        reltype = 'movie';
+        reltype = 'Movies';
     }
     else {
-        reltype = 'other';
+        reltype = 'Other';
     }
 }
 
