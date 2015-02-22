@@ -8,7 +8,7 @@ var daysSinceRelease = 16,
     airDate,
     fileSizeInBytes,
     fileName,
-    tth,
+    tth = null,
     magnetic_link,
     reltype,
     hub;
