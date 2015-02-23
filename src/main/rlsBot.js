@@ -152,7 +152,7 @@ function relSearch(callback) {
                 if (m.indexOf("No releases found that contain") >= 0) {
                     var message = "!addRelease " + reltype + " " + magnetic_link + " Note please wait for up to 5min";
                     console.log(message);
-                    hub.say(message, null);
+                    hub.say(message, callback);
                     // release new episode
                     console.log("episode with TTH " + tth + " was released");
                 }
@@ -165,9 +165,8 @@ function relSearch(callback) {
     }
     else {
         console.log("Release as unlinked");
-        hub.say('!addRelease ' + reltype + ' ' + magnetic_link + ' Search for file, note please wait for up to 5min', null);
+        hub.say('!addRelease ' + reltype + ' ' + magnetic_link + ' Search for file, note please wait for up to 5min', callback);
     }
-    setTimeout(callback(), 10000);
 }
 
 shouldAnnounce();
