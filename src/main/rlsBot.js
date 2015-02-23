@@ -118,8 +118,9 @@ function release() {
         desc: 'Releasebot',               //Description
         tag: "nmdc.js",                   //tag
         share: 0                         //share size
-    },
-        setTimeout(relSearch(disconnect), 3000)).bind(this);
+    }, function() {
+        relSearch(disconnect);
+    }.bind(this));
 }
 
 function disconnect() {
@@ -140,32 +141,34 @@ function relSearch(callback) {
     console.log("relSearch");
     console.log(tth);
 
-    if (tth !== null) {
-        hub.say("!searchReleases " + tth, null);
-        console.log("Ask New_Releases with TTH: " + tth);
+    setTimeout(function() {
+        if (tth !== null) {
+            hub.say("!searchReleases " + tth, null);
+            console.log("Ask New_Releases with TTH: " + tth);
 
-        hub.onPrivate = function(u, m) {
-            if (u === "New_Releases") {
-                console.log("New_Releases said: " + m);
+            hub.onPrivate = function(u, m) {
+                if (u === "New_Releases") {
+                    console.log("New_Releases said: " + m);
 
-                if (m.indexOf("No releases found that contain") >= 0) {
-                    var message = "!addRelease " + reltype + " " + magnetic_link + " Note please wait for up to 5min";
-                    console.log(message);
-                    hub.say(message, callback);
-                    // release new episode
-                    console.log("episode with TTH " + tth + " was released");
-                }
-                else {
-                    // release was found already - don't release episode
-                    console.log("Not releasing episode with TTH " + tth + " cos someone else already got it");
+                    if (m.indexOf("No releases found that contain") >= 0) {
+                        var message = "!addRelease " + reltype + " " + magnetic_link + " Note please wait for up to 5min";
+                        console.log(message);
+                        hub.say(message, callback);
+                        // release new episode
+                        console.log("episode with TTH " + tth + " was released");
+                    }
+                    else {
+                        // release was found already - don't release episode
+                        console.log("Not releasing episode with TTH " + tth + " cos someone else already got it");
+                    }
                 }
             }
         }
-    }
-    else {
-        console.log("Release as unlinked");
-        hub.say('!addRelease ' + reltype + ' ' + magnetic_link + ' Search for file, note please wait for up to 5min', callback);
-    }
+        else {
+            console.log("Release as unlinked");
+            hub.say('!addRelease ' + reltype + ' ' + magnetic_link + ' Search for file, note please wait for up to 5min', callback);
+        }
+    }, 4000);
 }
 
 shouldAnnounce();
