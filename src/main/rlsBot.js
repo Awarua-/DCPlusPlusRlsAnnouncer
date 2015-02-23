@@ -6,8 +6,6 @@ var daysSinceRelease = 16,
     nmdc,
     filePath,
     airDate,
-    fileSizeInBytes,
-    fileName,
     tth = null,
     magnetic_link,
     reltype,
@@ -26,7 +24,6 @@ function shouldAnnounce() {
 
     if (now < airDateInMs + daysInMs) {
         console.log("good to release");
-        getFileName(); //this doesn't feel right
         getFileSize();
         getTTH(release);
     }
@@ -38,15 +35,19 @@ function shouldAnnounce() {
     }
 }
 
-function getFileName() {
-    fileName = path.basename(filePath);
+function getFileNameForLink() {
+    var fileName = path.basename(filePath);
     fileName = fileName.replace(/ /g, '+');
     fileName = fileName.replace(/,/g, '%2C');
+    return fileName;
+}
 
+function getFileName() {
+    return path.basename(filePath);
 }
 
 function getFileSize() {
-    fileSizeInBytes = fs.statSync(filePath)["size"];
+     return parseInt(fs.statSync(filePath)["size"]);
 }
 
 function getTTH(callback) {
@@ -130,10 +131,10 @@ function disconnect() {
 
 function createMagneticLink() {
     if (tth !== null) {
-        magnetic_link = "magnet:?xt=urn:tree:tiger:" + tth + "&xl=" + parseInt(fileSizeInBytes) + "&dn=" + fileName;
+        magnetic_link = "magnet:?xt=urn:tree:tiger:" + tth + "&xl=" + getFileSize() + "&dn=" + getFileNameForLink();
     }
     else {
-        magnetic_link = fileName;
+        magnetic_link = getFileName();
     }
 }
 
