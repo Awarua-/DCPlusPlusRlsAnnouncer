@@ -119,7 +119,8 @@ function release() {
         tag: "nmdc.js",                   //tag
         share: 0                         //share size
     }, function() {
-        relSearch(disconnect);
+        setTimeout(
+        relSearch(disconnect), 3000);
     }.bind(this));
 }
 
