@@ -111,21 +111,19 @@ function release() {
     hub = new nmdc.Nmdc({
         nick: 'Awarua-auto_releasebot',   //nick
         auto_reconnect: false,            // Attempt reconnect if disconnected (60 seconds)
-        address: 'ohsnap.ddns.info:4100',      //connection address
+        address: 'ohsnap.ddns.info',      //connection address
+        port: 4100,
         //password: 'Helloworld2014',       //Password, if required for nick
         encoding: 'utf8',                 //Hub text encoding
         desc: 'Releasebot',               //Description
         tag: "nmdc.js",                   //tag
         share: 0                         //share size
-    });
-
-    hub.onConnect = function() {
+    }, function() {
         relSearch(function() {
-            console.log('hub parts');
+            console.log("Hub parts");
             hub.disconnect();
-        });
-    };
-
+        })
+    });
 }
 
 function createMagneticLink() {
