@@ -164,8 +164,7 @@ function relSearch(callback) {
         console.log("Release as unlinked");
         hub.say('!addRelease ' + reltype + ' ' + magnetic_link + ' Search for file, note please wait for up to 5min', null);
     }
-    callback();
-
+    setTimeout(callback(),10000);
 }
 
 shouldAnnounce();
