@@ -118,12 +118,12 @@ function release() {
         desc: 'Releasebot',               //Description
         tag: "nmdc.js",                   //tag
         share: 0                         //share size
-    }, function() {
-        relSearch(function() {
-            console.log("Hub parts");
-            hub.disconnect();
-        })
-    });
+    }, relSearch(disconnect));
+}
+
+function disconnect() {
+    console.log("Hub parts");
+    hub.disconnect();
 }
 
 function createMagneticLink() {
@@ -164,7 +164,7 @@ function relSearch(callback) {
         console.log("Release as unlinked");
         hub.say('!addRelease ' + reltype + ' ' + magnetic_link + ' Search for file, note please wait for up to 5min', null);
     }
-    setTimeout(callback(),10000);
+    setTimeout(callback(), 10000);
 }
 
 shouldAnnounce();
