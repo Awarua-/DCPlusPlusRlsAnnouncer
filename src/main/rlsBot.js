@@ -118,7 +118,7 @@ function release() {
         desc: 'Releasebot',               //Description
         tag: "nmdc.js",                   //tag
         share: 0                         //share size
-    }, relSearch(disconnect));
+    }, relSearch(disconnect).bind(this));
 }
 
 function disconnect() {
