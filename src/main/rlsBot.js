@@ -118,7 +118,7 @@ function release() {
         desc: 'Releasebot',               //Description
         tag: "nmdc.js",                   //tag
         share: 0                         //share size
-    }, relSearch(disconnect).bind(this));
+    }, relSearch(disconnect));
 }
 
 function disconnect() {
@@ -138,7 +138,7 @@ function createMagneticLink() {
 function relSearch(callback) {
     console.log("relSearch");
     console.log(tth);
-    console.log(hub);
+    console.log(this.hub);
     if (tth !== null) {
         hub.say("!searchReleases " + tth, null);
         console.log("Ask New_Releases with TTH: " + tth);
