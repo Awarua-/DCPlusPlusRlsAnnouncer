@@ -140,8 +140,7 @@ function createMagneticLink() {
 function relSearch(callback) {
     console.log("relSearch");
     console.log(tth);
-    console.log(hub);
-    console.log(this.hub);
+
     if (tth !== null) {
         hub.say("!searchReleases " + tth, null);
         console.log("Ask New_Releases with TTH: " + tth);
