@@ -118,10 +118,8 @@ function release() {
         desc: 'Releasebot',               //Description
         tag: "nmdc.js",                   //tag
         share: 0                         //share size
-    }, function() {
-        setTimeout(
-        relSearch(disconnect), 3000);
-    }.bind(this));
+    },
+        setTimeout(relSearch(disconnect), 3000).bind(this));
 }
 
 function disconnect() {
