@@ -53,7 +53,7 @@ function getFileSize() {
 function getTTH(callback) {
     var filePathJava = filePath.replace(' ', "\\ ");
     var spawn = require('child_process').spawn;
-    var prc = spawn('java',  ['-jar', '../../lib/tth/tth.jar', "\'" +filePathJava + "\'"]);
+    var prc = spawn('java',  ['-jar', path.resolve(__dirname, '../../lib/tth/tth.jar'), "\'" +filePathJava + "\'"]);
     console.log(filePath);
 
 //noinspection JSUnresolvedFunction
@@ -148,7 +148,7 @@ function relSearch(callback) {
             hub.say("!searchReleases " + tth, null);
             console.log("Ask New_Releases with TTH: " + tth);
 
-            hub.onPrivate = function(u, m) {
+            hub.onPrivate = function (u, m) {
                 if (u === "New_Releases") {
                     console.log("New_Releases said: " + m);
 
@@ -167,8 +167,26 @@ function relSearch(callback) {
             }
         }
         else {
-            console.log("Release as unlinked");
-            hub.say('!addRelease ' + reltype + ' ' + magnetic_link + ' Search for file, note please wait for up to 5min', callback);
+            hub.say("!searchReleases " + magnetic_link, null);
+            console.log("Ask New_Releases with TTH: " + magnetic_link);
+
+            hub.onPrivate = function(u, m) {
+                if (u === "New_Releases") {
+                    console.log("New_Releases said: " + m);
+
+                    if (m.indexOf("No releases found that contain") >= 0) {
+                        var message = "!addRelease " + reltype + " " + magnetic_link + ' Search for file, note please wait for up to 5min';
+                        console.log(message);
+                        hub.say(message, callback);
+                        // release new episode
+                        console.log("episode with name " + magnetic_link + " was released");
+                    }
+                    else {
+                        // release was found already - don't release episode
+                        console.log("Not releasing episode with name " + magnetic_link + " cos someone else already got it");
+                    }
+                }
+            }
         }
     }, 4000);
 }
