@@ -162,6 +162,7 @@ function relSearch(callback) {
                     else {
                         // release was found already - don't release episode
                         console.log("Not releasing episode with TTH " + tth + " cos someone else already got it");
+                        callback();
                     }
                 }
             }
@@ -184,6 +185,7 @@ function relSearch(callback) {
                     else {
                         // release was found already - don't release episode
                         console.log("Not releasing episode with name " + magnetic_link + " cos someone else already got it");
+                        callback();
                     }
                 }
             }
