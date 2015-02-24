@@ -51,7 +51,6 @@ function getFileSize() {
 }
 
 function getTTH(callback) {
-    var filePathJava = filePath.replace(/ /g, "\\ ");
     var spawn = require('child_process').spawn;
     var prc = spawn('java',  ['-jar', path.resolve(__dirname, '../../lib/tth/tth.jar'), '\"' + filePathJava + '\"']);
     console.log(filePath);
