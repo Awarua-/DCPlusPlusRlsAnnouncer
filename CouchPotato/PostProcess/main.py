@@ -15,6 +15,7 @@ class PostProcess(Plugin):
         addEvent('renamer.after', self.callscript)
 
     def callscript(self, message=None, group=None):
+        log.info("Run post process script")
         moviefile = group['renamed_files']
         date = strftime("%Y-%m-%d", datetime.now())
 
