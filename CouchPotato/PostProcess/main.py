@@ -1,4 +1,4 @@
-from couchpotato.core.event import addEvGent
+from couchpotato.core.event import addEvent
 from couchpotato.core.logger import CPLog
 from couchpotato.core.plugins.base import Plugin
 from subprocess import Popen, PIPE
