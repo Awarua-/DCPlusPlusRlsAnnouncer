@@ -3,7 +3,7 @@ from couchpotato.core.logger import CPLog
 from couchpotato.core.plugins.base import Plugin
 from subprocess import Popen, PIPE
 import traceback
-import datetime
+from datetime import datetime
 from time import strftime
 
 log = CPLog(__name__)
@@ -17,7 +17,7 @@ class PostProcess(Plugin):
     def callscript(self, message=None, group=None):
         log.info("Run post process script")
         moviefile = group['renamed_files']
-        date = strftime("%Y-%m-%d", datetime.datetime.now())
+        date = datetime.now().strftime("%Y-%m-%d")
 
         command = ['nodejs', '~/DCPlusPlusRlsAnnouncer/src/main/rlsBot.js']
         for x in moviefile:
