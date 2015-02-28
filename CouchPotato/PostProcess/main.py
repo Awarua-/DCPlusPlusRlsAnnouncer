@@ -17,7 +17,7 @@ class PostProcess(Plugin):
     def callscript(self, message=None, group=None):
         log.info("Run post process script")
         moviefile = group['renamed_files']
-        date = strftime("%Y-%m-%d", datetime.now())
+        date = strftime("%Y-%m-%d", datetime.date.now())
 
         command = ['nodejs', '~/DCPlusPlusRlsAnnouncer/src/main/rlsBot.js']
         for x in moviefile:
