@@ -20,20 +20,22 @@ class PostProcess(Plugin):
         date = datetime.now().strftime("%Y-%m-%d")
 
         command = ['nodejs', '~/DCPlusPlusRlsAnnouncer/src/main/rlsBot.js']
+        movies = []
+        movie = None
         for x in moviefile:
             log.info('moviefile' + str(x))
 
             if str(x).endswith(".mkv") or str(x).endswith(".avi") or str(x).endswith(".mp4"):
-                command.append(x)
+                movies.append(x)
 
-        if len(command) == 0:
+        if len(movies) == 0:
             return False
 
-        if len(command) == 1:
+        if len(movies) == 1:
             movie = command[0]
 
-        if len(command) > 1:
-            movie = self.find_largest_file(command)
+        if len(movies) > 1:
+            movie = self.find_largest_file(movies)
 
         command.append(movie)
         command.append(date)
