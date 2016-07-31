@@ -19,7 +19,7 @@ class PostProcess(Plugin):
         moviefile = group['renamed_files']
         date = datetime.now().strftime("%Y-%m-%d")
 
-        command = ['nodejs', '~/DCPlusPlusRlsAnnouncer/src/main/rlsBot.js']
+        command = ['node', '~/DCPlusPlusRlsAnnouncer/dcplusplusreleaseannouncer.js']
         movies = []
         movie = None
         for x in moviefile:

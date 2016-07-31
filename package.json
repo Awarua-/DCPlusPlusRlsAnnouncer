@@ -1,0 +1,22 @@
+{
+  "name": "dcplusplus_rls_announcer",
+  "version": "1.0.0",
+  "description": "Notifies dc++ clients of new releases",
+  "main": "dcplusplusrlsannouncer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Awarua-/DCPlusPlusRlsAnnouncer.git"
+  },
+  "author": "Dion Woolley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Awarua-/DCPlusPlusRlsAnnouncer/issues"
+  },
+  "homepage": "https://github.com/Awarua-/DCPlusPlusRlsAnnouncer#readme",
+  "dependencies": {
+    "nmdc": "^1.6.0"
+  }
+}
