@@ -1,5 +1,5 @@
 let nmdc = require('nmdc'),
-    config = require('config.json'),
+    config = require('./config.json'),
     fs = require('fs'),
     path = require('path'),
     spawn = require('child_process').spawn,
@@ -11,12 +11,12 @@ const day = 24 * 60 * 60 * 1000,
     now = new Date().getTime();
 
 function getTTH(cb) {
-    let prc = spawn('java', ['-jar', path.resolve(__dirname, '../../lib/tth/tth.jar'), release.filePath]);
+    let prc = spawn('java', ['-jar', path.resolve(__dirname, 'lib/tth/tth.jar'), release.filePath]);
 
     prc.stdout.setEncoding('utf8');
     prc.stdout.on('data', function (data) {
         data = data.toString();
-        let line = str.replace(/(\r?\n)/g, '');
+        let line = data.replace(/(\r?\n)/g, '');
         line = line.match(/^TTH:\s+.*$/);
         if (line) {
             release.tth = line[0].replace(/^TTH:\s/, '');
@@ -25,29 +25,29 @@ function getTTH(cb) {
             console.error('Could not find TTH: prefix in process output');
             return;
         }
+    });
 
-        prc.stderr.setEncoding('utf8');
-        prc.stderr.on('data', function(data) {
-            console.error('TTH process failed with error: ' + data.toString());
-        })
+    prc.stderr.setEncoding('utf8');
+    prc.stderr.on('data', function(data) {
+        console.error('TTH process failed with error: ' + data.toString());
+    });
 
-        prc.on('close', function(code)) {
-            console.info('process exited with code: ', + code);
-            if (cb) {
-                cb();
-            }
+    prc.on('close', function(code) {
+        console.info('process exited with code: ', + code);
+        if (cb) {
+            cb();
         }
-    })
+    });
 };
 
-function searchReleases() {
+function searchReleases(callback) {
     setTimeout(() => {
         if (release.tth) {
             hub.onPrivate = (user, message) => {
-                if (u === 'New_Releases') {
+                if (user === 'New_Releases') {
                     console.info('New_Releases said: ' + message);
 
-                    if (m.indexOf('No releases found that contain') >= 0) {
+                    if (message.indexOf('No releases found that contain') >= 0) {
                         let response = '!addRelease ' + release.type + ' ' + release.magneticLink + '\nNote please wait for file to be hashed';
                         console.info('Announcing release');
                         hub.say(response, callback);
@@ -57,14 +57,14 @@ function searchReleases() {
                         callback();
                     }
                 }
-            }
+            };
 
             hub.say('!searchReleases ' + release.tth, null);
             console.info('Ask new releases if a release exists matching TTH: ' + release.tth);
         }
         else {
             hub.onPrivate = (user, message) => {
-                if (u === 'New_Releases') {
+                if (user === 'New_Releases') {
                     console.info('New_Releases said: ' + message);
                     if (message.indexOf('No releases found that contain') >= 0) {
                         let response = '!addRelease ' + release.type + ' ' + release.magneticLink + '\nSearch for file, note please wait for file to be hashed';
@@ -76,7 +76,7 @@ function searchReleases() {
                     console.info('Release matching name ' + release.magneticLink + ' already present');
                     callback();
                 }
-            }
+            };
 
             hub.say('!searchReleases ' + release.magneticLink, null);
             console.info('Ask new releases if a release exists matching : ' + release.magneticLink);
@@ -84,17 +84,17 @@ function searchReleases() {
     }, 4000);
 };
 
-function release() {
+function prepareRelease() {
     if (!release.tth) {
         console.error('TTH for file not generated, failed to release');
-        release.magneticLink = path.basename(filePath);
+        release.magneticLink = path.basename(release.filePath);
     }
     else {
         release.magneticLink = 'magnet:?xt=urn:tree:tiger:' + release.tth + '&xl=' + release.fileSize + '&dn=' + encodeURIComponent(release.filePath);
     }
 
     for (let rlsType in config.types) {
-        if (release.path.indexOf(path.resolve(rlsType.path)) == 0) {
+        if (release.filePath.includes(rlsType.path)) {
             release.type = rlsType.type;
             break;
         }
@@ -117,9 +117,9 @@ function release() {
     }, () => {
         searchReleases(() => {
             console.info('Disconnected from hub');
-            hub.disconnect()
+            hub.disconnect();
         });
-    })
+    });
 };
 
 (function announce() {
@@ -127,11 +127,12 @@ function release() {
         console.error('No config :(');
         return;
     }
-    release.filePath = path.resolve(process.argv[2]);
-    release.fileSize = parseInt(fs.statSync(release.filePath)['size']);
+    console.log(process.argv[2]);
+    release.filePath = path.normalize(process.argv[2]);
+    release.fileSize = parseInt(fs.statSync(release.filePath).size);
     release.airDate = Date.parse(process.argv[3]);
 
-    getTTH(release);
+    getTTH(prepareRelease);
 
     let daysElapsed = config.daysElapsed || 16;
 
@@ -145,3 +146,4 @@ function release() {
 
 
 })();
+
