@@ -80,15 +80,15 @@ function searchReleases(callback) {
 			log('Announcing release: ' +  response);
                         hub.say(response, callback);
                     }
-                	else {
-                    		console.error('Release matching name ' + release.magneticLink + ' already present');
-                    		callback();
-                	}
+                    else {
+                        console.error('Release matching name ' + release.name + ' already present');
+                        callback();
+                    }
 		}
             };
 
-            hub.say('!searchReleases ' + release.magneticLink, null);
-            console.error('Ask new releases if a release exists matching : ' + release.magneticLink);
+            hub.say('!searchReleases ' + release.name, null);
+            console.error('Ask new releases if a release exists matching : ' + release.name);
         }
     }, 4000);
 };
@@ -96,10 +96,10 @@ function searchReleases(callback) {
 function prepareRelease() {
     if (!release.tth) {
         console.error('TTH for file not generated, failed to release');
-        release.magneticLink = path.basename(release.filePath);
+        release.magneticLink = 'magnet:?xl=' + release.fileSize + '&dn=' + release.name;
     }
     else {
-        release.magneticLink = 'magnet:?xt=urn:tree:tiger:' + release.tth + '&xl=' + release.fileSize + '&dn=' + encodeURIComponent(release.filePath);
+        release.magneticLink = 'magnet:?xt=urn:tree:tiger:' + release.tth + '&xl=' + release.fileSize + '&dn=' + release.name;
     }
 
     for (let rlsType in config.types) {
@@ -140,6 +140,9 @@ function prepareRelease() {
     release.filePath = path.normalize(process.argv[2]);
     release.fileSize = parseInt(fs.statSync(release.filePath).size);
     release.airDate = Date.parse(process.argv[3]);
+    release.name = path.basename(encodeURIComponent(release.filePath));
+    release.name = release.name.replace(/%20/g, '+');
+
 
     getTTH(prepareRelease);
 
@@ -155,4 +158,3 @@ function prepareRelease() {
 
 
 })();
-
