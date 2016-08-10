@@ -10,6 +10,10 @@ let nmdc = require('nmdc'),
 const day = 24 * 60 * 60 * 1000,
     now = new Date().getTime();
 
+function log(message) {
+	//fs.appendFileSync('log.txt', message);
+};
+
 function getTTH(cb) {
     let prc = spawn('java', ['-jar', path.resolve(__dirname, 'lib/tth/tth.jar'), release.filePath]);
 
@@ -22,7 +26,7 @@ function getTTH(cb) {
             release.tth = line[0].replace(/^TTH:\s/, '');
         }
         else {
-            console.error('Could not find TTH: prefix in process output');
+            console.info('Could not find TTH: prefix in process output');
             return;
         }
     });
@@ -45,41 +49,46 @@ function searchReleases(callback) {
         if (release.tth) {
             hub.onPrivate = (user, message) => {
                 if (user === 'New_Releases') {
-                    console.info('New_Releases said: ' + message);
+                    console.error('New_Releases said: ' + message);
+			log('New_Releases said: ' + message);
 
                     if (message.indexOf('No releases found that contain') >= 0) {
                         let response = '!addRelease ' + release.type + ' ' + release.magneticLink + '\nNote please wait for file to be hashed';
-                        console.info('Announcing release');
+                        console.error('Announcing release: ' + response);
+			log('Announcing release: ' + response);
                         hub.say(response, callback);
                     }
                     else {
-                        console.info('Release matching tth already present');
+                        console.error('Release matching tth already present');
+			log('Release matching tth already present');
                         callback();
                     }
                 }
             };
 
             hub.say('!searchReleases ' + release.tth, null);
-            console.info('Ask new releases if a release exists matching TTH: ' + release.tth);
+            console.error('Ask new releases if a release exists matching TTH: ' + release.tth);
         }
         else {
             hub.onPrivate = (user, message) => {
                 if (user === 'New_Releases') {
-                    console.info('New_Releases said: ' + message);
+                    console.error('New_Releases said: ' + message);
+			log('New_Releases said: ' + message);
                     if (message.indexOf('No releases found that contain') >= 0) {
                         let response = '!addRelease ' + release.type + ' ' + release.magneticLink + '\nSearch for file, note please wait for file to be hashed';
-                        console.info('Announcing release');
+                        console.error('Announcing release: ' + response);
+			log('Announcing release: ' +  response);
                         hub.say(response, callback);
                     }
-                }
-                else {
-                    console.info('Release matching name ' + release.magneticLink + ' already present');
-                    callback();
-                }
+                	else {
+                    		console.error('Release matching name ' + release.magneticLink + ' already present');
+                    		callback();
+                	}
+		}
             };
 
             hub.say('!searchReleases ' + release.magneticLink, null);
-            console.info('Ask new releases if a release exists matching : ' + release.magneticLink);
+            console.error('Ask new releases if a release exists matching : ' + release.magneticLink);
         }
     }, 4000);
 };
