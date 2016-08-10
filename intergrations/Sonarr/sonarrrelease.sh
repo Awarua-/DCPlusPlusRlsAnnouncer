@@ -8,5 +8,6 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-echo $DIR
-node $DIR/../../dcplusplusreleaseannouncer.js "$sonarr_episodefile_path" "$sonarr_episodefile_airdatesutc"
+
+DATE="$(echo date -d \"$sonarr_episodefile_episodeairdateutc\" +'%Y-%m-%dT%H:%M:%S+00:00')"
+node $DIR/../../dcplusplusreleaseannouncer.js "$sonarr_episodefile_path" $(eval $DATE)
