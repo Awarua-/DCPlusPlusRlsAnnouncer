@@ -10,10 +10,6 @@ let nmdc = require('nmdc'),
 const day = 24 * 60 * 60 * 1000,
     now = new Date().getTime();
 
-function log(message) {
-	//fs.appendFileSync('log.txt', message);
-};
-
 function getTTH(cb) {
     let prc = spawn('java', ['-jar', path.resolve(__dirname, 'lib/tth/tth.jar'), release.filePath]);
 
@@ -37,7 +33,7 @@ function getTTH(cb) {
     });
 
     prc.on('close', function(code) {
-        console.error('process exited with code: ', + code);
+        console.info('process exited with code: ', + code);
         if (cb) {
             cb();
         }
@@ -45,73 +41,58 @@ function getTTH(cb) {
 };
 
 function searchReleases(callback) {
-    hub.onSystem = (message) => {
-	console.error(message);
-    };
-
-    hub.onDebug = (message) => {
-	console.error(message);
-    };
-
     setTimeout(() => {
         if (release.tth) {
             hub.onPrivate = (user, message) => {
                 if (user === 'New_Releases') {
-                    console.error('New_Releases said: ' + message);
-			log('New_Releases said: ' + message);
-
+                    console.log('New_Releases said: ' + message);
                     if (message.indexOf('No releases found that contain') >= 0) {
                         let response = '!addRelease ' + release.type + ' ' + release.magneticLink + '\nNote please wait for file to be hashed';
-                        console.error('Announcing release: ' + response);
-			log('Announcing release: ' + response);
+                        console.log('Announcing release: ' + response);
                         hub.say(response, callback);
                     }
                     else {
-                        console.error('Release matching tth already present');
-			log('Release matching tth already present');
+                        console.log('Release matching tth already present');
                         callback();
                     }
                 }
             };
 
             hub.say('!searchReleases ' + release.tth, null);
-            console.error('Ask new releases if a release exists matching TTH: ' + release.tth);
+            console.log('Ask new releases if a release exists matching TTH: ' + release.tth);
         }
         else {
             hub.onPrivate = (user, message) => {
                 if (user === 'New_Releases') {
-                    console.error('New_Releases said: ' + message);
-			log('New_Releases said: ' + message);
+                    console.log('New_Releases said: ' + message);
                     if (message.indexOf('No releases found that contain') >= 0) {
                         let response = '!addRelease ' + release.type + ' ' + release.magneticLink + '\nSearch for file, note please wait for file to be hashed';
-                        console.error('Announcing release: ' + response);
-			log('Announcing release: ' +  response);
+                        console.log('Announcing release: ' + response);
                         hub.say(response, callback);
                     }
                     else {
-                        console.error('Release matching name ' + release.name + ' already present');
+                        console.log('Release matching name ' + release.name + ' already present');
                         callback();
                     }
-		}
+                }
             };
 
             hub.say('!searchReleases ' + release.name, null);
-            console.error('Ask new releases if a release exists matching : ' + release.name);
+            console.log('Ask new releases if a release exists matching : ' + release.name);
         }
     }, 4000);
 };
 
 function prepareRelease() {
     if (!release.tth) {
-        console.error('TTH for file not generated, failed to release');
+        console.error('TTH for file not generated');
         release.magneticLink = 'magnet:?xl=' + release.fileSize + '&dn=' + release.name;
     }
     else {
         release.magneticLink = 'magnet:?xt=urn:tree:tiger:' + release.tth + '&xl=' + release.fileSize + '&dn=' + release.name;
     }
 
-    for (let rlsType in config.types) {
-	console.error(rlsType);
+    for (let rlsType of config.types) {
         if (release.filePath.includes(rlsType.path)) {
             release.type = rlsType.type;
             break;
@@ -134,7 +115,7 @@ function prepareRelease() {
         share: 0
     }, () => {
         searchReleases(() => {
-            console.error('Disconnected from hub');
+            console.log('Disconnected from hub');
             hub.disconnect();
         });
     });
@@ -145,25 +126,19 @@ function prepareRelease() {
         console.error('No config :(');
         return;
     }
-    console.log(process.argv[2]);
     release.filePath = path.normalize(process.argv[2]);
     release.fileSize = parseInt(fs.statSync(release.filePath).size);
     release.airDate = Date.parse(process.argv[3]);
     release.name = encodeURIComponent(path.basename(release.filePath));
     release.name = release.name.replace(/%20/g, '+');
 
-
     let daysElapsed = config.daysElapsed || 16;
-    console.error('inputdate: ' + process.argv[3]);
-    console.error(release.airDate);
-    console.error(now);
-    console.error(release.airDate + (day * daysElapsed));
     if (now < release.airDate + (day * daysElapsed)) {
-        console.error('Release is within elapsed days, realeasing');
+        console.log('Release is within elapsed days, realeasing');
 
     }
     else {
-        console.error('Air data of release is older that elapsed days, don\'t announce');
+        console.log('Air data of release is older that elapsed days, don\'t announce');
 	return;
     }
 
