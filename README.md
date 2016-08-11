@@ -34,36 +34,28 @@ Set the path to be:`<installDir>/intergrations/Sonarr/sonarrrelease.[ps1,sh]`
 ### Config
 Below is an example config
 
-password and daysElapsed are optional<br>
+password, daysElapsed and slient are optional<br>
+password defaults to empty string ""  
 daysElapsed defaults to 16  
-type defaults to Other if no type maps are specified.
+slient defaults to false  
+type defaults to Other if no type maps are specified.  
+NB: paths in windows are required to be escaped.  
 ```js
 {
     "nick": "my_rlsbot",
     "address": "mydcplusplusserver.com",
     "password": "Password",
     "port": 1234,
-    "daysElapsed": 16
+    "daysElapsed": 16,
+    "silent":true,
     "types": [
         {
             "path": "/nfs/Media/Anime",
             "type": "Anime"
         },
         {
-            "path": "/nfs/Media/Tv",
+            "path": "Z:\\Media\\Tv",
             "type": "TV"
-        },
-        {
-            "path": "/nfs/Media/HD Movies",
-            "type": "Movies"
-        },
-        {
-            "path": "/nfs/Media/Documentaries",
-            "type": "Documentaries"
-        },
-        {
-            "path": "/nfs/Media/Music",
-            "type": "Music"
         }
     ]
 }

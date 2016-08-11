@@ -22,7 +22,7 @@ function getTTH(cb) {
             release.tth = line[0].replace(/^TTH:\s/, '');
         }
         else {
-            console.info('Could not find TTH: prefix in process output');
+            console.info('Could not find TTH: prefix in process output, possibly not the right line?');
             return;
         }
     });
@@ -52,6 +52,9 @@ function searchReleases(callback) {
                     }
                     if (message.indexOf('No releases found that contain') >= 0) {
                         let response = '!addRelease ' + release.type + ' ' + release.magneticLink + '\nNote please wait for file to be hashed';
+                        if (release.slient) {
+                            response += " --silent";
+                        }
                         console.log('Announcing release: ' + response);
                         hub.say(response, callback);
                     }
@@ -75,6 +78,9 @@ function searchReleases(callback) {
                     }
                     if (message.indexOf('No releases found that contain') >= 0) {
                         let response = '!addRelease ' + release.type + ' ' + release.magneticLink + '\nSearch for file, note please wait for file to be hashed';
+                        if (release.slient) {
+                            response += " --silent";
+                        }
                         console.log('Announcing release: ' + response);
                         hub.say(response, callback);
                     }
@@ -148,6 +154,12 @@ function prepareRelease() {
     else {
         console.log('Air data of release is older that elapsed days, don\'t announce');
 	return;
+    }
+
+    release.silent = false;
+
+    if (config.silent) {
+        release.silent = config.silent;
     }
 
     getTTH(prepareRelease);
