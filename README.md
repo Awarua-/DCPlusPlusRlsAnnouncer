@@ -28,7 +28,7 @@ Support for Sickbeard has been dropped, last working version present in repo
 #### Sonarr
 
 Setup a new connection as a custom script under the settings menu  
-Supported commands are `On Grab` and `On Upgrade`  
+Supported commands are `On Download` and `On Upgrade`  
 Set the path to be:`<installDir>/intergrations/Sonarr/sonarrrelease.[ps1,sh]`
 
 ### Config
