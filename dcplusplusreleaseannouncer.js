@@ -46,6 +46,10 @@ function searchReleases(callback) {
             hub.onPrivate = (user, message) => {
                 if (user === 'New_Releases') {
                     console.log('New_Releases said: ' + message);
+                    if (message.indexOf('*WARNING*') >= 0) {
+                        //throw away warning message.
+                        return;
+                    }
                     if (message.indexOf('No releases found that contain') >= 0) {
                         let response = '!addRelease ' + release.type + ' ' + release.magneticLink + '\nNote please wait for file to be hashed';
                         console.log('Announcing release: ' + response);
@@ -65,6 +69,10 @@ function searchReleases(callback) {
             hub.onPrivate = (user, message) => {
                 if (user === 'New_Releases') {
                     console.log('New_Releases said: ' + message);
+                    if (message.indexOf('*WARNING*') >= 0) {
+                        //throw away warning message.
+                        return;
+                    }
                     if (message.indexOf('No releases found that contain') >= 0) {
                         let response = '!addRelease ' + release.type + ' ' + release.magneticLink + '\nSearch for file, note please wait for file to be hashed';
                         console.log('Announcing release: ' + response);
@@ -86,7 +94,7 @@ function searchReleases(callback) {
 function prepareRelease() {
     if (!release.tth) {
         console.error('TTH for file not generated');
-        release.magneticLink = 'magnet:?xl=' + release.fileSize + '&dn=' + release.name;
+        release.magneticLink = release.name;
     }
     else {
         release.magneticLink = 'magnet:?xt=urn:tree:tiger:' + release.tth + '&xl=' + release.fileSize + '&dn=' + release.name;

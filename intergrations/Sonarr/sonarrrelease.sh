@@ -9,5 +9,5 @@ done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 
-DATE="$(echo date -d \"$sonarr_episodefile_episodeairdateutc\" +'%Y-%m-%dT%H:%M:%S+00:00')"
+DATE="$(echo date -d \"$sonarr_episodefile_episodeairdates\" +'%Y-%m-%dT%H:%M:%S+00:00')"
 node $DIR/../../dcplusplusreleaseannouncer.js "$sonarr_episodefile_path" $(eval $DATE)

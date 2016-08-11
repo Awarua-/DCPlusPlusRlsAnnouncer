@@ -10,6 +10,7 @@ This project makes use of the [tthJava](https://github.com/Awarua-/tthJava) gene
 * Node >= 4.0.0
 * npm
 * Java, >= 1.8
+* node, npm, java in Path
 
 ### Instructions
 * run npm install
@@ -28,7 +29,7 @@ Support for Sickbeard has been dropped, last working version present in repo
 
 Setup a new connection as a custom script under the settings menu  
 Supported commands are `On Grab` and `On Upgrade`  
-Set the path to be:`<installDir>/intergrations/Sonarr/sonarrrelease.[bat,sh]`
+Set the path to be:`<installDir>/intergrations/Sonarr/sonarrrelease.[ps1,sh]`
 
 ### Config
 Below is an example config
@@ -41,7 +42,7 @@ type defaults to Other if no type maps are specified.
     "nick": "my_rlsbot",
     "address": "mydcplusplusserver.com",
     "password": "Password",
-    "port": 40404,
+    "port": 1234,
     "daysElapsed": 16
     "types": [
         {
