@@ -134,7 +134,7 @@ function prepareRelease() {
 }
 
 (function announce() {
-    let path,
+    let releasePath,
         airDate;
 
     if (!config || !config.address || !config.port) {
@@ -144,7 +144,7 @@ function prepareRelease() {
 
     if (process.env.sonarr_episodefile_path) {
         console.info("Detected Sonarr environment variables");
-        path = process.env.sonarr_episodefile_path;
+        releasePath = process.env.sonarr_episodefile_path;
         if (process.env.sonarr_episodefile_episodeairdatesutc) {
             airDate = chrono.parseDate(process.env.sonarr_episodefile_episodeairdatesutc).toISOString();
         }
@@ -153,16 +153,16 @@ function prepareRelease() {
         }
     }
     else {
-        path = process.argv[2];
+        releasePath = process.argv[2];
         airDate = process.argv[3];
     }
 
-    if (path == null || airDate == null) {
-        console.error('problem with script arguments, path: ' + path + ' airDate: ' + airDate);
+    if (releasePath == null || airDate == null) {
+        console.error('problem with script arguments, path: ' + releasePath + ' airDate: ' + airDate);
         return;
     }
 
-    release.filePath = path.normalize(path);
+    release.filePath = path.normalize(releasePath);
     release.fileSize = parseInt(fs.statSync(release.filePath).size);
     release.airDate = Date.parse(airDate);
     release.name = encodeURIComponent(path.basename(release.filePath));
