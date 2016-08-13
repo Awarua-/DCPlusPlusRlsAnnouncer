@@ -157,7 +157,7 @@ function prepareRelease() {
         airDate = process.argv[3];
     }
 
-    if (path == null || airDate == null || isNaN(airDate)) {
+    if (path == null || airDate == null) {
         console.error('problem with script arguments, path: ' + path + ' airDate: ' + airDate);
         return;
     }
