@@ -1,4 +1,5 @@
 let nmdc = require('nmdc'),
+    chrono = require('chrono-node'),
     config = require('./config.json'),
     fs = require('fs'),
     path = require('path'),
@@ -13,7 +14,6 @@ const day = 24 * 60 * 60 * 1000,
 function getTTH(cb) {
     let prc = spawn('java', ['-jar', path.resolve(__dirname, 'lib/tth/tth.jar'), release.filePath]);
 
-    prc.stdout.setEncoding('utf8');
     prc.stdout.on('data', function (data) {
         data = data.toString();
         let line = data.replace(/(\r?\n)/g, '');
@@ -23,11 +23,9 @@ function getTTH(cb) {
         }
         else {
             console.info('Could not find TTH: prefix in process output, possibly not the right line?');
-            return;
         }
     });
 
-    prc.stderr.setEncoding('utf8');
     prc.stderr.on('data', function(data) {
         console.error('TTH process failed with error: ' + data.toString());
     });
@@ -38,7 +36,7 @@ function getTTH(cb) {
             cb();
         }
     });
-};
+}
 
 function searchReleases(callback) {
     setTimeout(() => {
@@ -52,7 +50,7 @@ function searchReleases(callback) {
                     }
                     if (message.indexOf('No releases found that contain') >= 0) {
                         let response = '!addRelease ' + release.type + ' ' + release.magneticLink + '\nNote please wait for file to be hashed';
-                        if (release.slient) {
+                        if (release.silent) {
                             response += " --silent";
                         }
                         console.log('Announcing release: ' + response);
@@ -78,7 +76,7 @@ function searchReleases(callback) {
                     }
                     if (message.indexOf('No releases found that contain') >= 0) {
                         let response = '!addRelease ' + release.type + ' ' + release.magneticLink + '\nSearch for file, note please wait for file to be hashed';
-                        if (release.slient) {
+                        if (release.silent) {
                             response += " --silent";
                         }
                         console.log('Announcing release: ' + response);
@@ -95,7 +93,7 @@ function searchReleases(callback) {
             console.log('Ask new releases if a release exists matching : ' + release.name);
         }
     }, 4000);
-};
+}
 
 function prepareRelease() {
     if (!release.tth) {
@@ -133,16 +131,40 @@ function prepareRelease() {
             hub.disconnect();
         });
     });
-};
+}
 
 (function announce() {
+    let path,
+        airDate;
+
     if (!config || !config.address || !config.port) {
         console.error('No config :(');
         return;
     }
-    release.filePath = path.normalize(process.argv[2]);
+
+    if (process.env.sonarr_episodefile_path) {
+        console.info("Detected Sonarr environment variables");
+        path = process.env.sonarr_episodefile_path;
+        if (process.env.sonarr_episodefile_episodeairdatesutc) {
+            airDate = chrono.parseDate(process.env.sonarr_episodefile_episodeairdatesutc).toISOString();
+        }
+        else if (process.env.sonarr_episodefile_episodeairdates) {
+            airDate = chrono.parseDate(process.env.sonarr_episodefile_episodeairdates).toISOString();
+        }
+    }
+    else {
+        path = process.argv[2];
+        airDate = process.argv[3];
+    }
+
+    if (path == null || airDate == null || isNaN(airDate)) {
+        console.error('problem with script arguments, path: ' + path + ' airDate: ' + airDate);
+        return;
+    }
+
+    release.filePath = path.normalize(path);
     release.fileSize = parseInt(fs.statSync(release.filePath).size);
-    release.airDate = Date.parse(process.argv[3]);
+    release.airDate = Date.parse(airDate);
     release.name = encodeURIComponent(path.basename(release.filePath));
     release.name = release.name.replace(/%20/g, '+');
 

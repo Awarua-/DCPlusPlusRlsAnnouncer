@@ -17,6 +17,12 @@
   },
   "homepage": "https://github.com/Awarua-/DCPlusPlusRlsAnnouncer#readme",
   "dependencies": {
+    "chrono-node": "^1.2.4",
     "nmdc": "^1.6.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^6.1.2",
+    "eslint": "^3.3.0",
+    "eslint-config-defaults": "^9.0.0"
   }
 }

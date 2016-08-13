@@ -29,7 +29,8 @@ Support for Sickbeard has been dropped, last working version present in repo
 
 Setup a new connection as a custom script under the settings menu  
 Supported commands are `On Grab` and `On Upgrade`  
-Set the path to be:`<installDir>/intergrations/Sonarr/sonarrrelease.[ps1,sh]`
+Set the Path to be: `<Path to node excuteable>`  
+Set the Arguments to be: `<installDir>/dcplusplusrlsannouncer.js`
 
 ### Config
 Below is an example config
@@ -47,7 +48,7 @@ NB: paths in windows are required to be escaped.
     "password": "Password",
     "port": 1234,
     "daysElapsed": 16,
-    "silent":true,
+    "silent": true,
     "types": [
         {
             "path": "/nfs/Media/Anime",
