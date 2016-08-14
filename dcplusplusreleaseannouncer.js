@@ -1,3 +1,4 @@
+'use strict';
 let nmdc = require('nmdc'),
     chrono = require('chrono-node'),
     config = require('./config.json'),
