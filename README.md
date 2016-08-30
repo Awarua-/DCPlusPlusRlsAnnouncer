@@ -21,11 +21,11 @@ This project makes use of the [tthJava](https://github.com/Awarua-/tthJava) gene
 
 #### CouchPotato
 Support for Couchpotato is still in development, last working version present in repo  
-`extra_scripts = "python <path to releaser script>\DCPlusPlusRlsAnnouncer-master\intergrations\SickBeard\sickbeardAnnounce.py"`  
-For more info on extra scripts in sickbeard see [here](https://code.google.com/archive/p/sickbeard/wikis/AdvancedSettings.wiki)
 
 #### Sickbeard
 Modify the following in your sickbeard config file
+`extra_scripts = "python <path to releaser script>\DCPlusPlusRlsAnnouncer-master\intergrations\SickBeard\sickbeardAnnounce.py"`  
+For more info on extra scripts in sickbeard see [here](https://code.google.com/archive/p/sickbeard/wikis/AdvancedSettings.wiki)
 
 #### Sonarr
 
