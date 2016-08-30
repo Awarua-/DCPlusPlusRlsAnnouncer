@@ -23,24 +23,18 @@ class PostProcess(Plugin):
         movies = []
         movie = None
         for x in moviefile:
-            log.info('moviefile' + str(x))
-
-            if str(x).endswith(".mkv") or str(x).endswith(".avi") or str(x).endswith(".mp4"):
-                movies.append(x)
-
-        if len(movies) == 0:
-            return False
+            movies.append(x)
 
         if len(movies) == 1:
             movie = command[0]
-
-        if len(movies) > 1:
+        elif len(movies) > 1:
             movie = self.find_largest_file(movies)
+        else:
+            return False
 
         command.append(movie)
         command.append(date)
-
-
+        
         try:
             p = Popen(command, stdout=PIPE)
             res = p.wait()
@@ -56,11 +50,12 @@ class PostProcess(Plugin):
         return False
 
     def find_largest_file(self, files):
-        largest = path.getsize(files[0])
+        largest = files[0]
+        largestSize = path.getsize(files[0])
 
         for movie in files[1:]:
             current = path.getsize(movie)
-            if current > largest:
-                largest = current
+            if current > largestSize:
+                largest = movie
 
         return largest
