@@ -1,6 +1,6 @@
 {
   "name": "dcplusplus_rls_announcer",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Notifies dc++ clients of new releases",
   "main": "dcplusplusrlsannouncer.js",
   "scripts": {
