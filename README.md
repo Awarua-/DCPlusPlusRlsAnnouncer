@@ -20,10 +20,12 @@ This project makes use of the [tthJava](https://github.com/Awarua-/tthJava) gene
 ### Intergrations
 
 #### CouchPotato
-Support for Couchpotato is still in development, last working version present in repo
+Support for Couchpotato is still in development, last working version present in repo  
+`extra_scripts = "python <path to releaser script>\DCPlusPlusRlsAnnouncer-master\intergrations\SickBeard\sickbeardAnnounce.py"`  
+For more info on extra scripts in sickbeard see [here](https://code.google.com/archive/p/sickbeard/wikis/AdvancedSettings.wiki)
 
 #### Sickbeard
-Support for Sickbeard has been dropped, last working version present in repo
+Modify the following in your sickbeard config file
 
 #### Sonarr
 
