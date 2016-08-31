@@ -5,6 +5,7 @@ from subprocess import Popen, PIPE
 import traceback
 from datetime import datetime
 from os import path
+import os
 
 log = CPLog(__name__)
 
@@ -12,14 +13,28 @@ log = CPLog(__name__)
 class PostProcess(Plugin):
 
     def __init__(self):
-        addEvent('renamer.after', self.callscript)
+        addEvent("renamer.after", self.callscript)
 
     def callscript(self, message=None, group=None):
         log.info("Run post process script")
-        moviefile = group['renamed_files']
+        moviefile = group["renamed_files"]
         date = datetime.now().strftime("%Y-%m-%d")
 
-        command = ['node', '~/DCPlusPlusRlsAnnouncer/dcplusplusreleaseannouncer.js']
+        scriptDir = None
+        releaserDir = os.environ.get("DC_RELEASE_DIR")
+        if releaserDir != None:
+            scriptDir = releaserDir
+        #check for likely locations in home dir
+        elif os.path.isdir("~/DCPlusPlusRlsAnnouncer"):
+            scriptDir = "~/DCPlusPlusRlsAnnouncer"
+        elif os.path.isdir("~/DCPlusPlusRlsAnnouncer-master")
+            scriptDir = "~/DCPlusPlusRlsAnnouncer-master"
+
+        if scriptDir == None
+            return False
+
+        scriptDir = os.path.abspath(os.path.join(scriptDir, "dcplusplusreleaseannouncer.js"))
+        command = ["node", str(scriptDir)]
         movies = []
         movie = None
         for x in moviefile:
@@ -32,9 +47,9 @@ class PostProcess(Plugin):
         else:
             return False
 
-        command.append(movie)
+        command.append(str(os.path.abspath(movie)))
         command.append(date)
-        
+
         try:
             p = Popen(command, stdout=PIPE)
             res = p.wait()
@@ -51,7 +66,7 @@ class PostProcess(Plugin):
 
     def find_largest_file(self, files):
         largest = files[0]
-        largestSize = path.getsize(files[0])
+        largestSize = path.getsize(largest)
 
         for movie in files[1:]:
             current = path.getsize(movie)
