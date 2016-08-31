@@ -22,15 +22,15 @@ class PostProcess(Plugin):
 
         scriptDir = None
         releaserDir = os.environ.get("DC_RELEASE_DIR")
-        if releaserDir != None:
+        if releaserDir not None:
             scriptDir = releaserDir
-        #check for likely locations in home dir
+        # check for likely locations in home dir
         elif os.path.isdir("~/DCPlusPlusRlsAnnouncer"):
             scriptDir = "~/DCPlusPlusRlsAnnouncer"
-        elif os.path.isdir("~/DCPlusPlusRlsAnnouncer-master")
+        elif os.path.isdir("~/DCPlusPlusRlsAnnouncer-master"):
             scriptDir = "~/DCPlusPlusRlsAnnouncer-master"
 
-        if scriptDir == None
+        if scriptDir is None:
             return False
 
         scriptDir = os.path.abspath(os.path.join(scriptDir, "dcplusplusreleaseannouncer.js"))
