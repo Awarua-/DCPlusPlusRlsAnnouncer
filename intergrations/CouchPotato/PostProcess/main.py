@@ -13,31 +13,30 @@ log = CPLog(__name__)
 class PostProcess(Plugin):
 
     def __init__(self):
-        addEvent("renamer.after", self.callscript)
+        addEvent("renamer.after", self.call_script)
 
-    def callscript(self, message=None, group=None):
+    def call_script(self, group=None):
         log.info("Run post process script")
-        moviefile = group["renamed_files"]
+        movie_file = group["renamed_files"]
         date = datetime.now().strftime("%Y-%m-%d")
 
-        scriptDir = None
-        releaserDir = os.environ.get("DC_RELEASE_DIR")
-        if releaserDir not None:
-            scriptDir = releaserDir
+        script_dir = None
+        releaser_dir = os.environ.get("DC_RELEASE_DIR")
+        if releaser_dir is not None:
+            script_dir = releaser_dir
         # check for likely locations in home dir
         elif os.path.isdir("~/DCPlusPlusRlsAnnouncer"):
-            scriptDir = "~/DCPlusPlusRlsAnnouncer"
+            script_dir = "~/DCPlusPlusRlsAnnouncer"
         elif os.path.isdir("~/DCPlusPlusRlsAnnouncer-master"):
-            scriptDir = "~/DCPlusPlusRlsAnnouncer-master"
+            script_dir = "~/DCPlusPlusRlsAnnouncer-master"
 
-        if scriptDir is None:
+        if script_dir is None:
             return False
 
-        scriptDir = os.path.abspath(os.path.join(scriptDir, "dcplusplusreleaseannouncer.js"))
-        command = ["node", str(scriptDir)]
+        script_dir = os.path.abspath(os.path.join(script_dir, "dcplusplusreleaseannouncer.js"))
+        command = ["node", str(script_dir)]
         movies = []
-        movie = None
-        for x in moviefile:
+        for x in movie_file:
             movies.append(x)
 
         if len(movies) == 1:
@@ -64,13 +63,14 @@ class PostProcess(Plugin):
 
         return False
 
-    def find_largest_file(self, files):
+    @staticmethod
+    def find_largest_file(files):
         largest = files[0]
-        largestSize = path.getsize(largest)
+        largest_size = path.getsize(largest)
 
         for movie in files[1:]:
             current = path.getsize(movie)
-            if current > largestSize:
+            if current > largest_size:
                 largest = movie
 
         return largest
